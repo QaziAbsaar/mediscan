@@ -28,6 +28,50 @@ import joblib
 import gradio as gr
 from huggingface_hub import InferenceClient
 
+DISEASE_DRUG_MAP = {
+    "heart attack": ["Aspirin", "Clopidogrel", "Atorvastatin", "Metoprolol", "Nitroglycerin"],
+    "diabetes": ["Metformin", "Insulin", "Glipizide", "Sitagliptin", "Empagliflozin"],
+    "malaria": ["Chloroquine", "Artemether", "Quinine", "Doxycycline"],
+    "typhoid": ["Ciprofloxacin", "Azithromycin", "Ceftriaxone", "Ampicillin"],
+    "pneumonia": ["Amoxicillin", "Azithromycin", "Levofloxacin", "Doxycycline"],
+    "dengue": ["Paracetamol", "Acetaminophen", "ORS solution", "IV Fluids"],
+    "fungal infection": ["Fluconazole", "Clotrimazole", "Terbinafine", "Ketoconazole"],
+    "jaundice": ["Ursodeoxycholic acid", "Lactulose", "Vitamin K", "Cholestyramine"],
+    "migraine": ["Sumatriptan", "Topiramate", "Propranolol", "Amitriptyline"],
+    "hypertension": ["Amlodipine", "Lisinopril", "Losartan", "Metoprolol", "Hydrochlorothiazide"],
+    "urinary tract infection": ["Nitrofurantoin", "Trimethoprim", "Ciprofloxacin", "Fosfomycin"],
+    "allergy": ["Cetirizine", "Loratadine", "Diphenhydramine", "Fexofenadine"],
+    "arthritis": ["Ibuprofen", "Naproxen", "Methotrexate", "Hydroxychloroquine"],
+    "tuberculosis": ["Isoniazid", "Rifampicin", "Pyrazinamide", "Ethambutol"],
+    "hepatitis a": ["Supportive care", "Rest", "IV Fluids", "Vitamin K"],
+    "hepatitis b": ["Tenofovir", "Entecavir", "Lamivudine", "Adefovir"],
+    "hepatitis c": ["Sofosbuvir", "Daclatasvir", "Ribavirin", "Ledipasvir"],
+    "hepatitis d": ["Pegylated Interferon", "Tenofovir"],
+    "hepatitis e": ["Supportive care", "Rest", "IV Fluids"],
+    "alcoholic hepatitis": ["Prednisolone", "Pentoxifylline", "Thiamine", "Zinc"],
+    "chronic cholestasis": ["Ursodeoxycholic acid", "Cholestyramine", "Rifampicin"],
+    "drug reaction": ["Antihistamines", "Corticosteroids", "Epinephrine"],
+    "peptic ulcer disease": ["Omeprazole", "Pantoprazole", "Amoxicillin", "Clarithromycin"],
+    "aids": ["Tenofovir", "Emtricitabine", "Efavirenz", "Dolutegravir"],
+    "gastroenteritis": ["ORS solution", "Metronidazole", "Loperamide", "Zinc supplements"],
+    "bronchial asthma": ["Salbutamol", "Budesonide", "Montelukast", "Ipratropium"],
+    "cervical spondylosis": ["Ibuprofen", "Diclofenac", "Pregabalin", "Cyclobenzaprine"],
+    "paralysis (brain hemorrhage)": ["Aspirin", "Warfarin", "Alteplase", "Mannitol"],
+    "chicken pox": ["Acyclovir", "Calamine lotion", "Antihistamines", "Paracetamol"],
+    "common cold": ["Paracetamol", "Cetirizine", "Pseudoephedrine", "Vitamin C"],
+    "dimorphic hemorrhoids (piles)": ["Hydrocortisone cream", "Docusate", "Fiber supplements"],
+    "varicose veins": ["Compression stockings", "Diosmin", "Troxerutin"],
+    "hypothyroidism": ["Levothyroxine", "Liothyronine"],
+    "hyperthyroidism": ["Methimazole", "Propylthiouracil", "Propranolol", "Radioiodine"],
+    "hypoglycemia": ["Dextrose", "Glucagon", "Glucose tablets", "Orange juice"],
+    "osteoarthritis": ["Ibuprofen", "Naproxen", "Acetaminophen", "Duloxetine"],
+    "vertigo": ["Meclizine", "Dimenhydrinate", "Betahistine", "Prochlorperazine"],
+    "acne": ["Benzoyl Peroxide", "Clindamycin", "Tretinoin", "Doxycycline"],
+    "psoriasis": ["Methotrexate", "Cyclosporine", "Betamethasone", "Calcipotriol"],
+    "impetigo": ["Mupirocin", "Fusidic acid", "Amoxicillin-Clavulanate"],
+    "diabetes mellitus": ["Metformin", "Insulin Glargine", "Sitagliptin", "Empagliflozin"],
+}
+
 warnings.filterwarnings("ignore")
 
 # ─────────────────────────────────────────────
@@ -166,40 +210,47 @@ def get_precautions(disease: str) -> list:
 # ─────────────────────────────────────────────
 # HELPER — OpenFDA Drug Lookup
 # ─────────────────────────────────────────────
-def fetch_drug_info(disease_name: str) -> list:
-    """
-    Query OpenFDA drug label endpoint.
-    Returns a list of dicts with drug info, or empty list on failure.
-    """
-    try:
-        query = disease_name.replace(" ", "+")
-        url = (
-            f"https://api.fda.gov/drug/label.json"
-            f"?search=indications_and_usage:{query}&limit=3"
-        )
-        resp = requests.get(url, timeout=5)
-        resp.raise_for_status()
-        data = resp.json()
-        results = data.get("results", [])
-        drugs = []
-        for r in results:
-            openfda = r.get("openfda", {})
-            brand = openfda.get("brand_name", ["Unknown"])[0]
-            generic = openfda.get("generic_name", ["Unknown"])[0]
-            manufacturer = openfda.get("manufacturer_name", ["Unknown"])[0]
-            purpose_raw = r.get("indications_and_usage", [""])[0]
-            purpose = purpose_raw[:300] + "..." if len(purpose_raw) > 300 else purpose_raw
-            drugs.append(
-                {
-                    "brand": brand,
-                    "generic": generic,
-                    "manufacturer": manufacturer,
-                    "purpose": purpose,
-                }
-            )
-        return drugs
-    except Exception:
-        return []
+def get_drug_recommendations(disease: str):
+    disease_lower = disease.lower().strip()
+    results = []
+
+    # Use mapping first, fallback to disease name
+    known_drugs = DISEASE_DRUG_MAP.get(disease_lower, [disease])[:3]
+
+    for drug_name in known_drugs:
+        try:
+            url = f"https://api.fda.gov/drug/label.json?search=openfda.generic_name:{drug_name}&limit=1"
+            response = requests.get(url, timeout=5)
+            data = response.json()
+
+            if "results" in data and data["results"]:
+                item = data["results"][0]
+                openfda = item.get("openfda", {})
+                brand = openfda.get("brand_name", [drug_name])[0]
+                generic = openfda.get("generic_name", [drug_name])[0]
+                manufacturer = openfda.get("manufacturer_name", ["Consult a pharmacist"])[0]
+                indication = item.get("indications_and_usage", ["Not available"])[0][:300]
+            else:
+                brand = drug_name
+                generic = drug_name
+                manufacturer = "Consult a pharmacist"
+                indication = f"Commonly prescribed for {disease}. Please consult a licensed physician."
+
+        except Exception:
+            brand = drug_name
+            generic = drug_name
+            manufacturer = "Consult a pharmacist"
+            indication = f"Commonly prescribed for {disease}. Please consult a licensed physician."
+
+        results.append({
+            "brand": brand,
+            "generic": generic,
+            "manufacturer": manufacturer,
+            "indication": indication,
+            "drug_name": drug_name
+        })
+
+    return results
 
 
 # ─────────────────────────────────────────────
@@ -359,7 +410,7 @@ def predict_disease(selected_symptoms: list):
 """
 
         # ── Output Card 3 — Drug Recommendation ──
-        drugs = fetch_drug_info(disease)
+        drugs = get_drug_recommendations(disease)
         google_url = (
             f"https://www.google.com/search?q=buy+{disease.replace(' ', '+')}+medicine"
         )
@@ -367,25 +418,44 @@ def predict_disease(selected_symptoms: list):
         if drugs:
             drug_sections = []
             for i, d in enumerate(drugs, 1):
+                brand = d.get('brand', 'Unknown')
+                generic = d.get('generic', 'Unknown')
+                fallback = d.get('drug_name', 'Unknown')
+                
+                # 1. Use openfda.brand_name if available
+                if brand and brand != "Unknown":
+                    display_name = brand
+                # 2. Else use openfda.generic_name if available
+                elif generic and generic != "Unknown":
+                    display_name = generic
+                # 3. Else use drug_name from DISEASE_DRUG_MAP
+                else:
+                    display_name = fallback
+                
+                # Ensure we NEVER display "Unknown" for brand/generic/manufacturer
+                display_brand = display_name if brand == "Unknown" else brand
+                display_generic = display_name if generic == "Unknown" else generic
+                display_mfg = "Consult a pharmacist" if d['manufacturer'] == "Unknown" else d['manufacturer']
+
                 google_drug_url = (
                     f"https://www.google.com/search?q=buy+"
-                    f"{d['brand'].replace(' ', '+')}+medicine"
+                    f"{display_name.replace(' ', '+')}+medicine"
                 )
                 drugs_com_url = (
                     f"https://www.drugs.com/search.php?searchterm="
-                    f"{d['brand'].replace(' ', '+')}"
+                    f"{display_name.replace(' ', '+')}"
                 )
                 drug_sections.append(
                     f"""
-#### 💊 Drug {i}: {d['brand']}
+#### 💊 Drug {i}: {display_name}
 | | |
 |---|---|
-| **Brand Name** | {d['brand']} |
-| **Generic Name** | {d['generic']} |
-| **Manufacturer** | {d['manufacturer']} |
+| **Brand Name** | {display_brand} |
+| **Generic Name** | {display_generic} |
+| **Manufacturer** | {display_mfg} |
 
 **Purpose / Indication:**
-> {d['purpose']}
+> {d['indication']}
 
 🛒 [Search on Google]({google_drug_url}) &nbsp;&nbsp; 📖 [More Info on Drugs.com]({drugs_com_url})
 """
