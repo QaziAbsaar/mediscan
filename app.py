@@ -485,6 +485,59 @@ body, .gradio-container {
     margin-top: 4px;
     font-style: italic;
 }
+
+/* ── AI Doctor Advice Card ── */
+#llm-card {
+    border-top: 6px solid #1e88e5;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+}
+#llm-card h2 {
+    color: #1e88e5;
+    font-weight: 800;
+    border-bottom: 2px solid var(--border-color-primary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+#llm-card h3 {
+    color: #1565c0;
+    font-weight: 700;
+    margin-top: 25px;
+}
+#llm-card p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+#llm-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+#llm-card ul li {
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+#llm-card ul li::before {
+    content: "✦";
+    color: #1e88e5;
+    position: absolute;
+    left: 4px;
+    font-size: 1.2rem;
+}
+#llm-card strong {
+    color: #0d47a1;
+    background: rgba(30, 136, 229, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+.dark #llm-card strong {
+    color: #90caf9;
+    background: rgba(144, 202, 249, 0.15);
+}
 """
 
 with gr.Blocks(
