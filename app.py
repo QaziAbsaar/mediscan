@@ -177,7 +177,8 @@ def fetch_drug_info(disease_name: str) -> list:
 # ─────────────────────────────────────────────
 HF_TOKEN = os.environ.get("HF_TOKEN")
 if HF_TOKEN:
-    llm_client = InferenceClient("meta-llama/Llama-3.2-3B-Instruct", token=HF_TOKEN)
+    # Switched to Zephyr-7b-beta as it is highly reliable on the free Serverless Inference API
+    llm_client = InferenceClient("HuggingFaceH4/zephyr-7b-beta", token=HF_TOKEN)
 else:
     llm_client = None
 
@@ -454,8 +455,9 @@ body, .gradio-container {
 
 /* ── Output cards ── */
 .output-card {
-    background: #ffffff;
-    border: 1px solid #e3e8f0;
+    background: var(--background-fill-primary);
+    color: var(--body-text-color);
+    border: 1px solid var(--border-color-primary);
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);

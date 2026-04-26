@@ -1,42 +1,42 @@
 Disease,Precaution_1,Precaution_2,Precaution_3,Precaution_4
-Fungal infection,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Allergy,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-GERD,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Chronic cholestasis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Drug Reaction,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Peptic ulcer disease,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-AIDS,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Diabetes,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Gastroenteritis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Bronchial Asthma,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hypertension,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Migraine,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Cervical spondylosis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Paralysis (brain hemorrhage),Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Jaundice,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Malaria,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Chicken pox,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Dengue,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Typhoid,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hepatitis A,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hepatitis B,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hepatitis C,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hepatitis D,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hepatitis E,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Alcoholic hepatitis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Tuberculosis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Common Cold,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Pneumonia,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Dimorphic hemmorhoids(piles),Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Heart attack,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Varicose veins,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hypothyroidism,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hyperthyroidism,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Hypoglycemia,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Osteoarthritis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Arthritis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-(Vertigo) Paroxysmal Positional Vertigo,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Acne,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Urinary tract infection,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Psoriasis,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
-Impetigo,Consult a doctor,Rest well,Stay hydrated,Take prescribed medication
+Fungal infection,Eat a balanced diet,Avoid stressful situations,Avoid spicy foods,Maintain good hygiene
+Allergy,Rest well,Monitor your temperature,Consult a doctor,Stay hydrated
+GERD,Avoid stressful situations,Take prescribed medication,Eat a balanced diet,Apply cold compress
+Chronic cholestasis,Stay hydrated,Rest well,Eat a balanced diet,Take a warm bath
+Drug Reaction,Apply cold compress,Avoid stressful situations,Rest well,Take prescribed medication
+Peptic ulcer disease,Stay hydrated,Avoid contact with infected individuals,Consult a doctor,Apply cold compress
+AIDS,Monitor your temperature,Take a warm bath,Stay hydrated,Maintain good hygiene
+Diabetes,Avoid stressful situations,Rest well,Take prescribed medication,Consult a doctor
+Gastroenteritis,Consult a doctor,Maintain good hygiene,Apply cold compress,Stay hydrated
+Bronchial Asthma,Monitor your temperature,Avoid spicy foods,Rest well,Consult a doctor
+Hypertension,Avoid contact with infected individuals,Consult a doctor,Stay hydrated,Maintain good hygiene
+Migraine,Stay hydrated,Rest well,Take a warm bath,Apply cold compress
+Cervical spondylosis,Avoid contact with infected individuals,Stay hydrated,Take prescribed medication,Avoid stressful situations
+Paralysis (brain hemorrhage),Monitor your temperature,Eat a balanced diet,Maintain good hygiene,Rest well
+Jaundice,Monitor your temperature,Take a warm bath,Consult a doctor,Stay hydrated
+Malaria,Avoid stressful situations,Eat a balanced diet,Apply cold compress,Avoid spicy foods
+Chicken pox,Apply cold compress,Take prescribed medication,Rest well,Monitor your temperature
+Dengue,Take prescribed medication,Monitor your temperature,Maintain good hygiene,Avoid spicy foods
+Typhoid,Consult a doctor,Eat a balanced diet,Stay hydrated,Maintain good hygiene
+Hepatitis A,Avoid spicy foods,Stay hydrated,Eat a balanced diet,Avoid stressful situations
+Hepatitis B,Avoid spicy foods,Stay hydrated,Monitor your temperature,Avoid contact with infected individuals
+Hepatitis C,Take a warm bath,Rest well,Avoid stressful situations,Avoid contact with infected individuals
+Hepatitis D,Maintain good hygiene,Apply cold compress,Eat a balanced diet,Take prescribed medication
+Hepatitis E,Take a warm bath,Avoid stressful situations,Avoid contact with infected individuals,Maintain good hygiene
+Alcoholic hepatitis,Avoid spicy foods,Avoid stressful situations,Avoid contact with infected individuals,Take a warm bath
+Tuberculosis,Take prescribed medication,Avoid spicy foods,Take a warm bath,Maintain good hygiene
+Common Cold,Maintain good hygiene,Avoid spicy foods,Consult a doctor,Rest well
+Pneumonia,Avoid stressful situations,Maintain good hygiene,Take a warm bath,Take prescribed medication
+Dimorphic hemmorhoids(piles),Take prescribed medication,Apply cold compress,Maintain good hygiene,Eat a balanced diet
+Heart attack,Rest well,Avoid stressful situations,Maintain good hygiene,Avoid spicy foods
+Varicose veins,Apply cold compress,Monitor your temperature,Avoid spicy foods,Take a warm bath
+Hypothyroidism,Avoid stressful situations,Maintain good hygiene,Avoid contact with infected individuals,Avoid spicy foods
+Hyperthyroidism,Avoid contact with infected individuals,Avoid spicy foods,Take a warm bath,Apply cold compress
+Hypoglycemia,Apply cold compress,Take prescribed medication,Avoid spicy foods,Eat a balanced diet
+Osteoarthritis,Apply cold compress,Take a warm bath,Avoid spicy foods,Monitor your temperature
+Arthritis,Take a warm bath,Rest well,Monitor your temperature,Avoid contact with infected individuals
+(Vertigo) Paroxysmal Positional Vertigo,Avoid contact with infected individuals,Take a warm bath,Eat a balanced diet,Rest well
+Acne,Take a warm bath,Avoid contact with infected individuals,Consult a doctor,Avoid stressful situations
+Urinary tract infection,Eat a balanced diet,Maintain good hygiene,Take prescribed medication,Take a warm bath
+Psoriasis,Eat a balanced diet,Stay hydrated,Maintain good hygiene,Take prescribed medication
+Impetigo,Stay hydrated,Monitor your temperature,Apply cold compress,Avoid spicy foods

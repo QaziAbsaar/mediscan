@@ -121,13 +121,35 @@ pd.DataFrame(desc_rows).to_csv("data/symptom_Description.csv", index=False)
 print("[OK] data/symptom_Description.csv created")
 
 # symptom_precaution.csv
-prec_rows = [{"Disease": d, "Precaution_1": "Consult a doctor", "Precaution_2": "Rest well",
-              "Precaution_3": "Stay hydrated", "Precaution_4": "Take prescribed medication"}
-             for d in DISEASE_SYMPTOMS_CLEAN]
+def generate_precautions(d):
+    precautions = [
+        "Consult a doctor", "Rest well", "Stay hydrated", "Take prescribed medication",
+        "Maintain good hygiene", "Eat a balanced diet", "Avoid stressful situations",
+        "Monitor your temperature", "Avoid contact with infected individuals",
+        "Take a warm bath", "Apply cold compress", "Avoid spicy foods"
+    ]
+    # Make them slightly deterministic based on the disease name
+    random.seed(hash(d))
+    selected = random.sample(precautions, 4)
+    return selected
+
+prec_rows = []
+for d in DISEASE_SYMPTOMS_CLEAN:
+    p = generate_precautions(d)
+    prec_rows.append({
+        "Disease": d, 
+        "Precaution_1": p[0], 
+        "Precaution_2": p[1],
+        "Precaution_3": p[2], 
+        "Precaution_4": p[3]
+    })
+    
 pd.DataFrame(prec_rows).to_csv("data/symptom_precaution.csv", index=False)
 print("[OK] data/symptom_precaution.csv created")
 
 # Symptom-severity.csv
+# Reset seed for consistency in other generation
+random.seed(42)
 sev_rows = [{"Symptom": s, "weight": random.randint(1, 7)} for s in SYMPTOMS]
 pd.DataFrame(sev_rows).to_csv("data/Symptom-severity.csv", index=False)
 print("[OK] data/Symptom-severity.csv created")

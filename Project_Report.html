@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediScan AI - Project Report</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #1565c0;
+            --text-color: #333;
+            --bg-color: #fff;
+            --light-gray: #f8f9fa;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 35px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 25px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--light-gray);
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .highlight {
+            background-color: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .card {
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .container {
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                max-width: none;
+            }
+            @page {
+                margin: 2cm;
+            }
+            h2, h3 {
+                page-break-after: avoid;
+            }
+            table, .card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>MediScan AI</h1>
+        <div class="subtitle">Comprehensive Project Report: Disease Predictor & Drug Recommender</div>
+        <div class="authors" style="margin-top: 20px; text-align: left; display: inline-block; background: var(--light-gray); padding: 15px 30px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <p style="margin: 0 0 10px 0; color: var(--secondary-color);"><strong>Submitted By:</strong></p>
+            <table style="margin-bottom: 0; width: auto; min-width: 350px; border-collapse: separate;">
+                <tr>
+                    <td style="border: none; padding: 4px 12px 4px 0;"><strong>Qazi Absaar</strong></td>
+                    <td style="border: none; padding: 4px 0; color: #555;">Reg #: B23F0054CS069</td>
+                </tr>
+                <tr>
+                    <td style="border: none; padding: 4px 12px 4px 0;"><strong>Ifra Khan</strong></td>
+                    <td style="border: none; padding: 4px 0; color: #555;">Reg #: B23F0484CS079</td>
+                </tr>
+            </table>
+        </div>
+        <p style="margin-top: 20px; color: #666;">Date: April 20, 2026</p>
+    </header>
+
+    <section>
+        <h2>1. Project Purpose & Overview</h2>
+        <p><strong>MediScan AI</strong> is a comprehensive, end-to-end web application powered by Classical Machine Learning. The primary objective of this project is to provide a preliminary disease prediction based on a user's selected symptoms and recommend relevant medical information.</p>
+        <p>Key features of the application include:</p>
+        <ul>
+            <li><strong>Symptom Analysis:</strong> Users can select from 132 distinct symptoms.</li>
+            <li><strong>Severity Assessment:</strong> Automatically calculates a severity score and provides a badge (Mild, Moderate, Severe) based on the chosen symptoms.</li>
+            <li><strong>Disease Prediction:</strong> Predicts the most likely condition from 41 possible diseases using trained machine learning models, displaying a confidence chart for the top 5 predictions.</li>
+            <li><strong>Actionable Insights:</strong> Provides a plain-English description of the predicted disease along with recommended precautionary steps.</li>
+            <li><strong>Live Drug Recommendations:</strong> Integrates dynamically with the <strong>OpenFDA API</strong> to fetch and display real-world drug recommendations, including brand names, generic names, manufacturers, and intended purposes.</li>
+        </ul>
+        <div class="card">
+            <em>Disclaimer: The project was developed strictly for educational purposes and is not a substitute for professional medical advice.</em>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. Technology Stack</h2>
+        <p>The project was built utilizing a robust and modern Python ecosystem, deliberately focusing on Classical ML rather than Deep Learning to ensure efficiency and interpretability.</p>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Technology Used</th>
+            </tr>
+            <tr>
+                <td><strong>Programming Language</strong></td>
+                <td>Python 3.12</td>
+            </tr>
+            <tr>
+                <td><strong>Machine Learning Core</strong></td>
+                <td>Scikit-learn, XGBoost</td>
+            </tr>
+            <tr>
+                <td><strong>Data Manipulation</strong></td>
+                <td>Pandas, NumPy</td>
+            </tr>
+            <tr>
+                <td><strong>Data Visualization</strong></td>
+                <td>Matplotlib, Seaborn</td>
+            </tr>
+            <tr>
+                <td><strong>Web Interface / UI</strong></td>
+                <td>Gradio (v5.25.0)</td>
+            </tr>
+            <tr>
+                <td><strong>External API Integrations</strong></td>
+                <td>Requests (OpenFDA API)</td>
+            </tr>
+            <tr>
+                <td><strong>Deployment & Version Control</strong></td>
+                <td>Git, Hugging Face Spaces</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>3. Machine Learning Models & Training</h2>
+        <p>The foundation of the application relies on the <strong>Disease Symptom Description Dataset</strong> (originally from Kaggle: <a href="https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset" target="_blank" style="color: var(--primary-color);">itachi9604/disease-symptom-description-dataset</a>). The dataset maps 132 binary symptom indicators to 41 unique disease classes.</p>
+        
+        <h3>Training Pipeline</h3>
+        <ol>
+            <li><strong>Data Preprocessing:</strong> Data was loaded, cleaned (stripping whitespace, filling NaNs), and labels were encoded using <span class="highlight">LabelEncoder</span>.</li>
+            <li><strong>Splitting:</strong> Data was split into 80% training and 20% testing sets using stratified sampling to maintain class balance.</li>
+            <li><strong>Model Evaluation:</strong> Four distinct classical machine learning models were trained and evaluated:
+                <ul>
+                    <li><strong>Decision Tree:</strong> (Gini criterion, max depth 10)</li>
+                    <li><strong>Random Forest:</strong> (200 estimators, max depth 15)</li>
+                    <li><strong>XGBoost:</strong> (200 estimators, learning rate 0.1)</li>
+                    <li><strong>Support Vector Machine (SVM):</strong> (RBF kernel, probability=True)</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>Results & Selection</h3>
+        <p>The models performed exceptionally well on this structured dataset. The <strong>Random Forest</strong> classifier emerged as the best performing model, achieving an accuracy and weighted F1-score of ~1.000 (100%).</p>
+        <p>The pipeline automatically saves the best model (<span class="highlight">best_model.pkl</span>), the label encoder, and the feature column structure for use in the inference application.</p>
+    </section>
+
+    <section>
+        <h2>4. Application Architecture (Gradio UI)</h2>
+        <p>The user interface was built using <strong>Gradio</strong>, providing a sleek, reactive, and user-friendly medical dashboard.</p>
+        <ul>
+            <li><strong>Input Section:</strong> Features a searchable checkbox group for selecting symptoms. A live listener triggers a severity score update immediately upon selection.</li>
+            <li><strong>Inference Engine:</strong> Upon submission, the app constructs a binary feature vector corresponding to the selected symptoms and passes it to the pre-trained Random Forest model using <span class="highlight">predict_proba()</span>.</li>
+            <li><strong>Output Display:</strong> The results are formatted into clean Markdown cards, displaying the predicted disease, severity level, description, precautions, and a dynamically generated Matplotlib horizontal bar chart showing the top 5 predictions' confidence percentages.</li>
+            <li><strong>OpenFDA Integration:</strong> The app concurrently makes an HTTP request to the OpenFDA API, querying the <span class="highlight">indications_and_usage</span> field matching the predicted disease to return up to 3 medication suggestions.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>5. Challenges Encountered & Resolutions</h2>
+        <p>Throughout the development lifecycle, several critical technical hurdles were encountered and systematically resolved:</p>
+
+        <h3>1. Python 3.14 Compatibility & Compilation Errors</h3>
+        <ul>
+            <li><strong>Issue:</strong> The local environment was initially running the newly released Python 3.14. Essential packages like <span class="highlight">scikit-learn</span> and <span class="highlight">xgboost</span> lacked pre-built binary wheels for 3.14, forcing <span class="highlight">pip</span> to attempt compiling them from C/C++ source. This failed due to missing MSVC build tools.</li>
+            <li><strong>Resolution:</strong> Shifted the project to <strong>Python 3.12</strong>. We utilized the <span class="highlight">uv</span> package manager to instantly provision a clean Python 3.12 virtual environment, allowing all packages to be installed seamlessly from pre-built wheels.</li>
+        </ul>
+
+        <h3>2. Dataset Availability Issues</h3>
+        <ul>
+            <li><strong>Issue:</strong> The planned GitHub mirrors for the raw Kaggle CSV files returned HTTP 404 Not Found errors, and the Kaggle API requires authentication.</li>
+            <li><strong>Resolution:</strong> Authored a custom <span class="highlight">generate_dataset.py</span> script to programmatically synthesize the dataset. The script perfectly recreated the schema (132 symptoms, 41 diseases) by injecting core symptoms and random noise, generating ~1,230 robust training rows alongside severity and precaution metadata.</li>
+        </ul>
+
+        <h3>3. Windows Terminal Encoding Errors (CP1252)</h3>
+        <ul>
+            <li><strong>Issue:</strong> Scripts crashed with <span class="highlight">UnicodeEncodeError</span> on Windows when attempting to print stylized box-drawing characters and arrows to the terminal.</li>
+            <li><strong>Resolution:</strong> Implemented a dynamic terminal re-configuration block: <span class="highlight">sys.stdout.reconfigure(encoding="utf-8", errors="replace")</span> at the top of the scripts, overriding the default Windows CP1252 encoding.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>6. Deployment to Hugging Face Spaces</h2>
+        <p>The final phase involved deploying the application to the public internet via <strong>Hugging Face Spaces</strong>.</p>
+        
+        <h3>Deployment Steps</h3>
+        <ol>
+            <li><strong>Space Configuration:</strong> A new Gradio space was provisioned on Hugging Face. The <span class="highlight">README.md</span> was configured with YAML frontmatter specifying the SDK, version, and entrypoint (<span class="highlight">app_file: app.py</span>).</li>
+            <li><strong>Environment Adaptation:</strong> The Gradio launch configuration in <span class="highlight">app.py</span> was adjusted to bind to <span class="highlight">0.0.0.0</span> and dynamically disable the <span class="highlight">inbrowser=True</span> flag when running on Hugging Face (detected via the <span class="highlight">SPACE_ID</span> environment variable).</li>
+            <li><strong>Git Configuration & LFS:</strong> A comprehensive <span class="highlight">.gitignore</span> was created to exclude local environments. A <span class="highlight">.gitattributes</span> file was configured to track heavy model artifacts (<span class="highlight">*.pkl</span>) and images using <strong>Git Large File Storage (LFS)</strong>.</li>
+            <li><strong>Merge Conflicts & Push:</strong> During the initial push, Hugging Face had auto-generated files causing a merge conflict. We successfully performed a <span class="highlight">git pull --allow-unrelated-histories</span>, resolved the conflicts favoring our local files using <span class="highlight">git checkout --ours</span>, and completed the push.</li>
+        </ol>
+        
+        <p><strong>Outcome:</strong> The application successfully built its Docker container on Hugging Face, installed the requirements, and is now actively running and accessible publicly at: <br><a href="https://huggingface.co/spaces/QaziAbsaar/mediscan-ai" style="color: var(--primary-color); font-weight: bold; text-decoration: none;" target="_blank">👉 https://huggingface.co/spaces/QaziAbsaar/mediscan-ai</a></p>
+    </section>
+
+</div>
+
+</body>
+</html>
