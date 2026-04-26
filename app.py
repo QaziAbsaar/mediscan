@@ -177,8 +177,8 @@ def fetch_drug_info(disease_name: str) -> list:
 # ─────────────────────────────────────────────
 HF_TOKEN = os.environ.get("HF_TOKEN")
 if HF_TOKEN:
-    # Switched to Zephyr-7b-beta as it is highly reliable on the free Serverless Inference API
-    llm_client = InferenceClient("HuggingFaceH4/zephyr-7b-beta", token=HF_TOKEN)
+    # Switched to Qwen/Qwen2.5-72B-Instruct as it is officially supported and highly capable on the free tier
+    llm_client = InferenceClient("Qwen/Qwen2.5-72B-Instruct", token=HF_TOKEN)
 else:
     llm_client = None
 
