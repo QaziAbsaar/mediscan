@@ -31,6 +31,15 @@ from huggingface_hub import InferenceClient
 warnings.filterwarnings("ignore")
 
 # ─────────────────────────────────────────────
+# LLM Initialization
+# ─────────────────────────────────────────────
+HF_TOKEN = os.environ.get("HF_TOKEN")
+if HF_TOKEN:
+    llm_client = InferenceClient("Qwen/Qwen2.5-72B-Instruct", token=HF_TOKEN)
+else:
+    llm_client = None
+
+# ─────────────────────────────────────────────
 # PATHS
 # ─────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -120,6 +129,27 @@ def get_disease_description(disease: str) -> str:
 
 
 def get_precautions(disease: str) -> list:
+    if llm_client:
+        prompt = f"List exactly 4 concise, actionable precautionary steps or home remedies for someone with {disease}. Output them as a simple numbered list without any intro or outro text."
+        try:
+            response = llm_client.chat_completion(
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=100,
+                temperature=0.3
+            )
+            text = response.choices[0].message.content
+            # Parse numbered list
+            lines = [line.strip() for line in text.strip().split('\n') if line.strip() and line[0].isdigit()]
+            precs = []
+            for line in lines:
+                parts = line.split('.', 1)
+                if len(parts) == 2:
+                    precs.append(parts[1].strip())
+            if len(precs) >= 2:
+                return precs[:4]
+        except Exception:
+            pass # Fall back to CSV if LLM fails
+
     row = df_prec[df_prec["Disease"].str.lower() == disease.lower()]
     if not row.empty:
         precs = []
@@ -175,13 +205,6 @@ def fetch_drug_info(disease_name: str) -> list:
 # ─────────────────────────────────────────────
 # HELPER — LLM Advice Generation
 # ─────────────────────────────────────────────
-HF_TOKEN = os.environ.get("HF_TOKEN")
-if HF_TOKEN:
-    # Switched to Qwen/Qwen2.5-72B-Instruct as it is officially supported and highly capable on the free tier
-    llm_client = InferenceClient("Qwen/Qwen2.5-72B-Instruct", token=HF_TOKEN)
-else:
-    llm_client = None
-
 def generate_llm_advice(disease: str, symptoms: list, drugs: list) -> str:
     if not llm_client:
         return "> ⚠️ **HF_TOKEN not found.** Add your Hugging Face token as a Secret in Space settings to enable the AI Doctor."
