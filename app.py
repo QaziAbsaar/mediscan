@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import joblib
 import gradio as gr
+from huggingface_hub import InferenceClient
 
 warnings.filterwarnings("ignore")
 
@@ -172,6 +173,45 @@ def fetch_drug_info(disease_name: str) -> list:
 
 
 # ─────────────────────────────────────────────
+# HELPER — LLM Advice Generation
+# ─────────────────────────────────────────────
+HF_TOKEN = os.environ.get("HF_TOKEN")
+if HF_TOKEN:
+    llm_client = InferenceClient("meta-llama/Llama-3.2-3B-Instruct", token=HF_TOKEN)
+else:
+    llm_client = None
+
+def generate_llm_advice(disease: str, symptoms: list, drugs: list) -> str:
+    if not llm_client:
+        return "> ⚠️ **HF_TOKEN not found.** Add your Hugging Face token as a Secret in Space settings to enable the AI Doctor."
+    
+    drug_names = [d['brand'] for d in drugs] if drugs else ["None specific"]
+    
+    prompt = f"""You are an empathetic, professional AI medical assistant. 
+A user has reported these symptoms: {', '.join(symptoms)}.
+Our ML model predicts the condition: {disease}.
+Suggested active ingredients/medications: {', '.join(drug_names)}.
+
+Write a brief, friendly prescription and advice note (under 150 words).
+Include:
+1. A brief, simple explanation of the condition.
+2. Recommended home care or lifestyle advice.
+3. A strong disclaimer that they must consult a real doctor.
+
+Output in Markdown format."""
+    
+    try:
+        response = llm_client.chat_completion(
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=250,
+            temperature=0.7
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"> ⚠️ **AI Doctor Error:** `{str(e)}`"
+
+
+# ─────────────────────────────────────────────
 # HELPER — Build Top-5 Confidence Chart
 # ─────────────────────────────────────────────
 def build_confidence_chart(probas: np.ndarray) -> plt.Figure:
@@ -239,13 +279,13 @@ def build_confidence_chart(probas: np.ndarray) -> plt.Figure:
 def predict_disease(selected_symptoms: list):
     """
     Main prediction function called by Gradio.
-    Returns: (result_md, info_md, drug_md, chart_fig, severity_score_str, severity_badge)
+    Returns: (result_md, info_md, drug_md, chart_fig, severity_score_str, severity_badge, llm_md)
     """
     try:
         # ── Validation ──────────────────────────
         if not selected_symptoms or len(selected_symptoms) < 3:
             warn_md = "⚠️ **Please select at least 3 symptoms for accurate results.**"
-            return warn_md, "", "", None, "0", "N/A"
+            return warn_md, "", "", None, "0", "N/A", ""
 
         # ── Build feature vector ─────────────────
         input_vec = pd.DataFrame(
@@ -341,13 +381,16 @@ def predict_disease(selected_symptoms: list):
 
         # ── Output Card 4 — Confidence Chart ─────
         chart_fig = build_confidence_chart(probas)
+        
+        # ── Output Card 5 — AI Doctor's Advice ───
+        llm_md = "## 🤖 AI Doctor's Advice\n\n" + generate_llm_advice(disease, selected_symptoms, drugs)
 
         sev_score_str = str(sev_score)
-        return result_md, info_md, drug_md, chart_fig, sev_score_str, sev_badge
+        return result_md, info_md, drug_md, chart_fig, sev_score_str, sev_badge, llm_md
 
     except Exception as e:
         err_md = f"❌ **Something went wrong.** Please try again.\n\n`{str(e)}`"
-        return err_md, "", "", None, "0", "N/A"
+        return err_md, "", "", None, "0", "N/A", ""
 
 
 # ─────────────────────────────────────────────
@@ -549,6 +592,17 @@ with gr.Blocks(
                 elem_id="drug-card",
             )
 
+    gr.HTML("<br>")
+
+    with gr.Row():
+        with gr.Column(scale=1):
+            gr.HTML('<div class="section-label">🤖 AI Doctor\'s Advice</div>')
+            llm_output = gr.Markdown(
+                value="",
+                elem_id="llm-card",
+                elem_classes=["output-card"]
+            )
+
     # ── Submit Button Action ─────────────────────
     submit_btn.click(
         fn=predict_disease,
@@ -560,6 +614,7 @@ with gr.Blocks(
             chart_output,
             severity_score_box,
             severity_badge_box,
+            llm_output,
         ],
     )
 
